@@ -1,0 +1,27 @@
+module ClkDiv(Clk, DivReset, ClkOut);
+	input Clk, DivReset;
+   output reg ClkOut;
+   reg ClkInt;
+   reg[24:0] Count;
+   parameter Value = 24999;
+  
+   always @(posedge Clk) begin
+      if( DivReset == 1 )begin
+         Count <= 0;
+         ClkOut <= 0;
+         ClkInt <= 0;
+      end
+      else begin
+         if( Count == Value ) begin
+            ClkOut <= ~ClkInt;
+            ClkInt <= ~ClkInt;
+            Count <= 0;
+         end
+         else begin
+            ClkOut <= ClkInt;
+            ClkInt <= ClkInt;
+            Count <= Count + 1;
+         end
+      end
+   end
+endmodule
